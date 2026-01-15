@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beurteilungspraxis Hochschule - Handlungsoptionen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            padding: 40px;
+            max-width: 1400px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            margin: 20px 0;
+        }
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .axis {
+            stroke: #34495e;
+            stroke-width: 2;
+            fill: none;
+        }
+        
+        .axis-label {
+            fill: #2c3e50;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .grid-line {
+            stroke: #ecf0f1;
+            stroke-width: 1;
+            stroke-dasharray: 5,5;
+        }
+        
+        .bubble {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .bubble circle {
+            fill: #74b9ff;
+            fill-opacity: 0.6;
+            stroke: #0984e3;
+            stroke-width: 2;
+        }
+        
+        .bubble:hover circle {
+            fill: #0984e3;
+            fill-opacity: 0.8;
+            stroke-width: 3;
+        }
+        
+        .bubble text {
+            fill: #2c3e50;
+            font-size: 12px;
+            font-weight: 600;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+        
+        .bubble.large circle {
+            fill: #fd79a8;
+            stroke: #e84393;
+        }
+        
+        .bubble.large:hover circle {
+            fill: #e84393;
+        }
+        
+        .bubble.medium circle {
+            fill: #a29bfe;
+            stroke: #6c5ce7;
+        }
+        
+        .bubble.medium:hover circle {
+            fill: #6c5ce7;
+        }
+        
+        .bubble.small circle {
+            fill: #81ecec;
+            stroke: #00b894;
+        }
+        
+        .bubble.small:hover circle {
+            fill: #00b894;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: rgba(44, 62, 80, 0.95);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            max-width: 300px;
+            line-height: 1.5;
+            z-index: 1000;
+        }
+        
+        .tooltip.show {
+            opacity: 1;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid;
+        }
+        
+        .legend-circle.large {
+            background: #fd79a8;
+            border-color: #e84393;
+        }
+        
+        .legend-circle.medium {
+            background: #a29bfe;
+            border-color: #6c5ce7;
+        }
+        
+        .legend-circle.small {
+            background: #81ecec;
+            border-color: #00b894;
+        }
+        
+        .legend-text {
+            color: #2c3e50;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            .chart-container {
+                height: 500px;
+            }
+            
+            .bubble text {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Überlegungen zur Weiterentwicklung der Beurteilungspraxis</h1>
+        <p class="subtitle">Hochschulkontext: Handlungsoptionen zwischen Öffnung und Wirkmächtigkeit</p>
+        
+        <div class="chart-container">
+            <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid meet">
+                <!-- Grid lines -->
+                <g class="grid">
+                    <line class="grid-line" x1="150" y1="150" x2="150" y2="600"/>
+                    <line class="grid-line" x1="150" y1="600" x2="1100" y2="600"/>
+                    <line class="grid-line" x1="350" y1="100" x2="350" y2="600"/>
+                    <line class="grid-line" x1="550" y1="100" x2="550" y2="600"/>
+                    <line class="grid-line" x1="750" y1="100" x2="750" y2="600"/>
+                    <line class="grid-line" x1="950" y1="100" x2="950" y2="600"/>
+                    <line class="grid-line" x1="150" y1="450" x2="1100" y2="450"/>
+                    <line class="grid-line" x1="150" y1="300" x2="1100" y2="300"/>
+                    <line class="grid-line" x1="150" y1="150" x2="1100" y2="150"/>
+                </g>
+                
+                <!-- Axes -->
+                <g class="axes">
+                    <!-- Y-axis -->
+                    <line class="axis" x1="150" y1="100" x2="150" y2="650" marker-end="url(#arrowY)"/>
+                    <!-- X-axis -->
+                    <line class="axis" x1="100" y1="600" x2="1150" y2="600" marker-end="url(#arrowX)"/>
+                </g>
+                
+                <!-- Arrow markers -->
+                <defs>
+                    <marker id="arrowX" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L9,3 z" fill="#34495e" />
+                    </marker>
+                    <marker id="arrowY" markerWidth="10" markerHeight="10" refX="3" refY="0" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,9 L6,9 L3,0 z" fill="#34495e" />
+                    </marker>
+                </defs>
+                
+                <!-- Axis labels -->
+                <text class="axis-label" x="625" y="640" text-anchor="middle">Öffnung der Prüfungsformate →</text>
+                <text class="axis-label" x="70" y="350" text-anchor="middle" transform="rotate(-90 70 350)">← Öffnung der Bewertungspraxis</text>
+                
+                <!-- Bubbles (Items will be added by JavaScript) -->
+                <g id="bubbles"></g>
+            </svg>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-circle large"></div>
+                <span class="legend-text">Hohe Wirkmächtigkeit</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-circle medium"></div>
+                <span class="legend-text">Mittlere Wirkmächtigkeit</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-circle small"></div>
+                <span class="legend-text">Geringe Wirkmächtigkeit</span>
+            </div>
+        </div>
+        
+        <div class="tooltip" id="tooltip"></div>
+    </div>
+    
+    <script>
+        const items = [
+            // Große Wirkmächtigkeit (large)
+            {
+                name: "Pass/Fail statt\nNotenskala",
+                x: 30,
+                y: 70,
+                size: 110,
+                category: "large",
+                description: "Reduziert Notenfixierung radikal, ermöglicht Risikofreude beim Lernen. Besonders wirkmächtig in Grundlagenmodulen."
+            },
+            {
+                name: "Resubmission-\nKultur",
+                x: 45,
+                y: 75,
+                size: 105,
+                category: "large",
+                description: "Statt 'Durchgefallen → Nachprüfung' wird Beurteilung zum iterativen Lernprozess mit Feedback und Überarbeitung."
+            },
+            {
+                name: "Kumulative\nBewertung",
+                x: 55,
+                y: 60,
+                size: 95,
+                category: "large",
+                description: "Portfolio oder mehrere Teilleistungen über das Semester verteilt zeigen Entwicklung statt One-Shot-Performance."
+            },
+            {
+                name: "Authentische\nPrüfungsformate",
+                x: 85,
+                y: 80,
+                size: 100,
+                category: "large",
+                description: "Fallstudien, simulierte Beratungsgespräche, Forschungsprojekte - je näher an realer Praxis, desto wirkmächtiger."
+            },
+            {
+                name: "Peer-Review als\nPrüfungsbestandteil",
+                x: 75,
+                y: 65,
+                size: 90,
+                category: "large",
+                description: "Nicht 'extra', sondern Teil der Bewertung. Stärkt Urteilsfähigkeit und metakognitive Kompetenzen enorm."
+            },
+            
+            // Mittlere Wirkmächtigkeit (medium)
+            {
+                name: "Open-Book-\nKlausuren",
+                x: 35,
+                y: 35,
+                size: 65,
+                category: "medium",
+                description: "Verändert Fragetypen (Anwendung statt Reproduktion), aber Format bleibt traditionelle Klausur."
+            },
+            {
+                name: "Take-Home-\nExams",
+                x: 50,
+                y: 40,
+                size: 70,
+                category: "medium",
+                description: "Zeitdruck reduziert, ermöglicht tiefere Auseinandersetzung, aber oft noch verschulte Aufgabenstellung."
+            },
+            {
+                name: "Transparente\nKriterien (Rubrics)",
+                x: 25,
+                y: 50,
+                size: 65,
+                category: "medium",
+                description: "Wichtig für Fairness und Orientierung, aber alleine nicht transformativ. Wird erst in Kombination wirkmächtig."
+            },
+            {
+                name: "Wahlmöglichkeiten\ninnerhalb Formaten",
+                x: 60,
+                y: 45,
+                size: 68,
+                category: "medium",
+                description: "Z.B. Essay zu 1 von 5 Themen oder Projekt in 2er/3er-Gruppe. Gibt Autonomie, aber Rahmen bleibt eng."
+            },
+            {
+                name: "Formative\nZwischenstände",
+                x: 45,
+                y: 55,
+                size: 75,
+                category: "medium",
+                description: "Nur wirkmächtig wenn WIRKLICH formativ (unbenotet) und mit konstruktivem Feedback verbunden."
+            },
+            
+            // Geringe Wirkmächtigkeit (small)
+            {
+                name: "Bonuspunkte\nEngagement",
+                x: 20,
+                y: 25,
+                size: 45,
+                category: "small",
+                description: "Oft zu marginal (1-2 Notenpunkte), um Lernverhalten wirklich nachhaltig zu verändern."
+            },
+            {
+                name: "Flexible\nAbgabefristen",
+                x: 30,
+                y: 20,
+                size: 48,
+                category: "small",
+                description: "Organisatorische Erleichterung (+/- 3 Tage), aber kaum pädagogische Tiefenwirkung."
+            },
+            {
+                name: "Digitale Tools\nstatt Papier",
+                x: 40,
+                y: 15,
+                size: 42,
+                category: "small",
+                description: "Technischer Aspekt der Abwicklung, keine grundlegende pädagogische Transformation."
+            },
+            {
+                name: "Anonymisierung\nbei Korrektur",
+                x: 15,
+                y: 35,
+                size: 50,
+                category: "small",
+                description: "Wichtig für Fairness und gegen Bias, aber begrenzte Wirkmächtigkeit als alleinige Maßnahme."
+            }
+        ];
+        
+        const svg = document.getElementById('bubbles');
+        const tooltip = document.getElementById('tooltip');
+        
+        // Scale functions
+        const xScale = (val) => 150 + (val / 100) * 950;
+        const yScale = (val) => 600 - (val / 100) * 500;
+        
+        // Create bubbles
+        items.forEach(item => {
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.classList.add('bubble', item.category);
+            
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', xScale(item.x));
+            circle.setAttribute('cy', yScale(item.y));
+            circle.setAttribute('r', item.size / 2);
+            
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('x', xScale(item.x));
+            text.setAttribute('y', yScale(item.y));
+            text.setAttribute('dy', '0.35em');
+            
+            // Handle multi-line text
+            const lines = item.name.split('\n');
+            if (lines.length > 1) {
+                lines.forEach((line, i) => {
+                    const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                    tspan.textContent = line;
+                    tspan.setAttribute('x', xScale(item.x));
+                    tspan.setAttribute('dy', i === 0 ? '-0.4em' : '1.1em');
+                    text.appendChild(tspan);
+                });
+            } else {
+                text.textContent = item.name;
+            }
+            
+            g.appendChild(circle);
+            g.appendChild(text);
+            svg.appendChild(g);
+            
+            // Tooltip interactions
+            g.addEventListener('mouseenter', (e) => {
+                tooltip.textContent = item.description;
+                tooltip.classList.add('show');
+            });
+            
+            g.addEventListener('mousemove', (e) => {
+                tooltip.style.left = (e.pageX + 15) + 'px';
+                tooltip.style.top = (e.pageY + 15) + 'px';
+            });
+            
+            g.addEventListener('mouseleave', () => {
+                tooltip.classList.remove('show');
+            });
+        });
+    </script>
+</body>
+</html>
