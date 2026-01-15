@@ -1,6 +1,6 @@
 # Beurteilungspraxis Hochschule - Interaktive Visualisierung
 
-Eine interaktive Visualisierung von Handlungsoptionen zur Weiterentwicklung der Beurteilungspraxis im Hochschulkontext.
+Eine interaktive Visualisierung von Handlungsoptionen zur Weiterentwicklung der Beurteilungspraxis im Hochschulkontext. -Beta-Fassung zu Testzwecken-
 
 ## Über diese Visualisierung
 
@@ -52,7 +52,7 @@ Diese Visualisierung steht unter [Creative Commons CC BY-SA 4.0](https://creativ
 
 ## Autor
 
-David Lüthi, Pädagogische Hochschule Graubünden (PHGR)
+David Halser, Pädagogische Hochschule Graubünden (PHGR)
 
 ---
 
